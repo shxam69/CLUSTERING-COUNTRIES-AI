@@ -283,13 +283,14 @@ section[data-testid="stSidebar"] * {
 
 .panel-title {
     font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
+    font-size: 1rem;
     letter-spacing: 4px;
-    color: #00ffe580;
+    color: #00ffe5;
     text-transform: uppercase;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #00ffe515;
-    padding-bottom: 8px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid rgba(0,255,229,0.3);
+    padding-bottom: 10px;
+    text-shadow: 0 0 8px rgba(0,255,229,0.5);
 }
 
 /* ---- Country detail card ---- */
@@ -436,7 +437,8 @@ section[data-testid="stSidebar"] label,
 section[data-testid="stSidebar"] span,
 section[data-testid="stSidebar"] p {
     color: #00ffe5 !important;
-    font-size: 0.72rem !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 1px !important;
 }
 
 /* Metric delta text */
@@ -482,9 +484,10 @@ section[data-testid="stSidebar"] p {
 }
 [data-testid="metric-container"] [data-testid="stMetricValue"] {
     font-family: 'Orbitron', monospace !important;
-    font-size: 2rem !important;
+    font-size: 2.2rem !important;
     color: #00ffe5 !important;
-    text-shadow: 0 0 12px #00ffe560 !important;
+    text-shadow: 0 0 16px rgba(0,255,229,0.7) !important;
+    font-weight: 900 !important;
 }
 [data-testid="metric-container"] label {
     font-size: 0.75rem !important;
@@ -540,28 +543,28 @@ section[data-testid="stSidebar"] p {
     justify-content: space-between;
     align-items: center;
     background: #050a0a;
-    border: 1px solid #00ffe520;
-    border-top: 2px solid #00ffe5;
-    padding: 8px 20px;
+    border: 1px solid rgba(0,255,229,0.15);
+    border-top: 3px solid #00ffe5;
+    padding: 12px 24px;
     margin-bottom: 12px;
-    font-size: 0.6rem;
+    font-size: 0.85rem;
     letter-spacing: 3px;
 }
 .nav-brand {
     font-family: 'Orbitron', monospace;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 900;
     color: #00ffe5;
-    text-shadow: 0 0 12px #00ffe5, 0 0 30px #00ffe580;
-    letter-spacing: 6px;
+    text-shadow: 0 0 14px #00ffe5, 0 0 35px rgba(0,255,229,0.6);
+    letter-spacing: 8px;
 }
-.nav-status { color: #39ff14; }
-.nav-info { color: #00ffe560; }
+.nav-status { color: #39ff14; font-size: 0.85rem; letter-spacing: 3px; font-weight: bold; }
+.nav-info { color: #00ffe5; font-size: 0.85rem; letter-spacing: 2px; }
 
 /* Big stat numbers like reference image */
 .big-stat {
     font-family: 'Orbitron', monospace;
-    font-size: 2rem;
+    font-size: 2.4rem;
     font-weight: 900;
     color: #00ffe5;
     text-shadow: 0 0 10px #00ffe580;
@@ -569,7 +572,7 @@ section[data-testid="stSidebar"] p {
     line-height: 1;
 }
 .big-stat-label {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     letter-spacing: 3px;
     color: #00ffe550;
     text-transform: uppercase;
@@ -599,11 +602,13 @@ section[data-testid="stSidebar"] p {
 .event-country { color: #fff; }
 .event-cluster { font-size: 0.55rem; letter-spacing: 2px; }
 .event-tag {
-    font-size: 0.5rem;
-    padding: 1px 6px;
+    font-size: 0.72rem;
+    padding: 3px 8px;
     border-radius: 0;
     font-family: 'Orbitron', monospace;
     letter-spacing: 2px;
+    font-weight: bold;
+    white-space: nowrap;
 }
 .tag-0 { background: #ff003c20; border: 1px solid #ff003c; color: #ff003c; }
 .tag-1 { background: #00ffe520; border: 1px solid #00ffe5; color: #00ffe5; }
@@ -742,9 +747,9 @@ with tab1:
             pct = round(count / total_countries * 100, 1)
             st.markdown(f"""
             <div style="margin-bottom:14px;">
-                <div class="big-stat-label" style="color:{color}80;">[{cluster_id}] {label}</div>
+                <div style="font-size:0.82rem; letter-spacing:3px; color:{color}; font-family:'Orbitron',monospace; margin-bottom:4px; text-shadow:0 0 6px {color}80;">[{cluster_id}] {label}</div>
                 <div class="big-stat" style="color:{color}; font-size:1.6rem;">{count:,}</div>
-                <div class="big-stat-delta delta-pos">NATIONS</div>
+                <div style="font-size:0.82rem; color:#ffffff; letter-spacing:2px; margin-top:2px;">NATIONS</div>
                 <div class="progress-bar-wrap" style="margin-top:4px;">
                     <div class="progress-bar-fill" style="width:{pct}%; background:linear-gradient(90deg, {color}, {color}80); box-shadow: 0 0 6px {color};"></div>
                 </div>
@@ -874,15 +879,26 @@ with tab1:
         for _, row in top_events.iterrows():
             c_id = row['KMeans_Pred']
             color = CLUSTER_COLORS[c_id]
-            tag_cls = f"tag-{c_id}"
             gdp_fmt = f"${int(row['gdpp']):,}"
+            label_short = CLUSTER_LABELS[c_id][:4]
             st.markdown(f"""
-            <div class="event-item">
+            <div style="display:flex; justify-content:space-between; align-items:center;
+                        padding:8px 0; border-bottom:1px solid rgba(0,255,229,0.12);">
                 <div>
-                    <div style="color:{color}; font-size:0.85rem; letter-spacing:1px; font-family:'Share Tech Mono',monospace;">↳ {row['country'][:16]}</div>
-                    <div style="color:#00ffe560; font-size:0.75rem; letter-spacing:1px;">GDP: {gdp_fmt} · LE: {row['life_expec']:.0f}yr</div>
+                    <div style="color:{color}; font-size:1rem; font-family:'Orbitron',monospace;
+                                font-weight:700; letter-spacing:1px; text-shadow:0 0 6px {color}80;">
+                        {row['country'][:18]}
+                    </div>
+                    <div style="color:#ffffff; font-size:0.82rem; letter-spacing:1px; margin-top:3px;">
+                        GDP: <b style="color:{color};">{gdp_fmt}</b> &nbsp;·&nbsp; LE: <b style="color:#fff;">{row['life_expec']:.0f} yrs</b>
+                    </div>
                 </div>
-                <span class="event-tag {tag_cls}">{CLUSTER_LABELS[c_id][:3]}</span>
+                <div style="background:{color}22; border:1px solid {color}; color:{color};
+                            font-family:'Orbitron',monospace; font-size:0.72rem;
+                            font-weight:700; padding:4px 8px; letter-spacing:2px;
+                            text-shadow:0 0 6px {color}; min-width:48px; text-align:center;">
+                    {label_short}
+                </div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -891,7 +907,7 @@ with tab1:
 
         # Mini contribution heatmap
         st.markdown(f"""
-        <div style="font-size:0.55rem; letter-spacing:2px; color:#00ffe560; margin-bottom:4px;">CLUSTER DENSITY</div>
+        <div style="font-size:0.85rem; letter-spacing:3px; color:#00ffe5; margin-bottom:8px; font-family:'Orbitron',monospace;">CLUSTER DENSITY</div>
         <div class="contrib-grid">
         {''.join([f'<div class="contrib-cell {"high" if i % 7 == 0 else "mid" if i % 3 == 0 else "low" if i % 2 == 0 else "off"}"></div>' for i in range(32)])}
         </div>
@@ -899,21 +915,21 @@ with tab1:
 
         st.markdown(f"""
         <div style="margin-top:12px;">
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding:5px 0; border-bottom:1px solid rgba(0,255,229,0.1);">
-                <span style="color:#00ffe580; letter-spacing:2px;">NATIONS</span>
-                <span style="color:#39ff14; font-family:'Orbitron',monospace; font-size:1rem;">+{len(filtered)}</span>
+            <div style="display:flex; justify-content:space-between; font-size:1rem; padding:7px 0; border-bottom:1px solid rgba(0,255,229,0.15);">
+                <span style="color:#00ffe5; letter-spacing:3px; font-family:'Orbitron',monospace; font-size:0.8rem;">NATIONS</span>
+                <span style="color:#39ff14; font-family:'Orbitron',monospace; font-size:1.3rem; font-weight:900; text-shadow:0 0 8px #39ff14;">+{len(filtered)}</span>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding:5px 0; border-bottom:1px solid rgba(0,255,229,0.1);">
-                <span style="color:#00ffe580; letter-spacing:2px;">CLUSTERS</span>
-                <span style="color:#00ffe5; font-family:'Orbitron',monospace; font-size:1rem;">4</span>
+            <div style="display:flex; justify-content:space-between; font-size:1rem; padding:7px 0; border-bottom:1px solid rgba(0,255,229,0.15);">
+                <span style="color:#00ffe5; letter-spacing:3px; font-family:'Orbitron',monospace; font-size:0.8rem;">CLUSTERS</span>
+                <span style="color:#00ffe5; font-family:'Orbitron',monospace; font-size:1.3rem; font-weight:900; text-shadow:0 0 8px #00ffe5;">4</span>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding:5px 0; border-bottom:1px solid rgba(0,255,229,0.1);">
-                <span style="color:#00ffe580; letter-spacing:2px;">ALGO</span>
-                <span style="color:#ffcc00; font-family:'Orbitron',monospace; font-size:0.85rem;">KMEANS</span>
+            <div style="display:flex; justify-content:space-between; font-size:1rem; padding:7px 0; border-bottom:1px solid rgba(0,255,229,0.15);">
+                <span style="color:#00ffe5; letter-spacing:3px; font-family:'Orbitron',monospace; font-size:0.8rem;">ALGO</span>
+                <span style="color:#ffcc00; font-family:'Orbitron',monospace; font-size:1rem; font-weight:900; text-shadow:0 0 8px #ffcc00;">KMEANS</span>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding:5px 0;">
-                <span style="color:#00ffe580; letter-spacing:2px;">DIM·RED</span>
-                <span style="color:#ff003c; font-family:'Orbitron',monospace; font-size:0.85rem;">PCA</span>
+            <div style="display:flex; justify-content:space-between; font-size:1rem; padding:7px 0;">
+                <span style="color:#00ffe5; letter-spacing:3px; font-family:'Orbitron',monospace; font-size:0.8rem;">DIM·RED</span>
+                <span style="color:#ff003c; font-family:'Orbitron',monospace; font-size:1rem; font-weight:900; text-shadow:0 0 8px #ff003c;">PCA</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1117,14 +1133,14 @@ with tab4:
         'inflation': 'INFLATION', 'total_fer': 'FERTILITY', 'PC1': 'PC1', 'PC2': 'PC2'
     })
 
-    st.dataframe(
-        display_df.style.applymap(
-            lambda v: f'color: {CLUSTER_COLORS.get(list(CLUSTER_LABELS.keys())[list(CLUSTER_LABELS.values()).index(v)] if v in CLUSTER_LABELS.values() else -1, "#00ffe5")}',
-            subset=['CLUSTER']
-        ),
-        use_container_width=True,
-        height=420,
-    )
+    label_to_color = {label: CLUSTER_COLORS[k] for k, label in CLUSTER_LABELS.items()}
+    def color_cluster(v):
+        return f'color: {label_to_color.get(v, "#00ffe5")}; font-weight: bold;'
+    try:
+        styled = display_df.style.map(color_cluster, subset=['CLUSTER'])
+    except AttributeError:
+        styled = display_df.style.applymap(color_cluster, subset=['CLUSTER'])
+    st.dataframe(styled, use_container_width=True, height=420)
 
     st.markdown(f"""
     <div class="status-bar">
